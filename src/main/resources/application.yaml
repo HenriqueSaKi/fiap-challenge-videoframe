@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: fiap-videoframe
+  data:
+    mongodb:
+      password: "fiap#2025"
+      username: "videoStream"
+      host: 172.17.108.191
+      port: 27017
+      database: videoframe
+
+application:
+  broker:
+    from: fiap-challenge-videframe-sqs
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  cloud:
+    aws:
+      sqs:
+        endpoint: ${application.aws.endpoint-override}
+        region: ${application.aws.region-override}
+
+application:
+  aws:
+    endpoint-override: http://172.17.108.191:4566
+    region-override: us-east-1
+
+logging:
+  level:
+    br.com.fiap.challenge.videoframe: DEBUG
