@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface VideoRepository extends MongoRepository<VideoDocument, UUID> {
+public interface VideoRepository extends MongoRepository<VideoDocument, String> {
 }

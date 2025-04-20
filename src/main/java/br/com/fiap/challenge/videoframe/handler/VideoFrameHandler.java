@@ -35,8 +35,8 @@ import java.util.zip.ZipOutputStream;
 public class VideoFrameHandler implements MessageHandler {
     private static final Logger LOG = LoggerFactory.getLogger(VideoFrameHandler.class);
 
-    private static final String BUCKET_IN = "fiap-challenge-videoframe-in-bucket";
-    private static final String BUCKET_OUT = "fiap-challenge-videoframe-out-bucket";
+    private static final String BUCKET_IN = "bucket-videos-fiap-hackathon/videos";
+    private static final String BUCKET_OUT = "bucket-videos-fiap-hackathon/zipFiles";
 
     private final ObjectMapper objectMapper;
     private final VideoRepository videoRepository;
@@ -57,16 +57,16 @@ public class VideoFrameHandler implements MessageHandler {
             throw internalException;
         }
 
-        LOG.debug("Retrieving video information with id: {}", value.id());
-        VideoDocument videoDocument = videoRepository.findById(value.id())
-                .orElseThrow(() -> new VideoFrameNotFoundException("O video com id {0} não foi encontrao na base de dados", value.id()));
+        LOG.debug("Retrieving video information with id: {}", value.getFrameId());
+        VideoDocument videoDocument = videoRepository.findById(value.getFrameId())
+                .orElseThrow(() -> new VideoFrameNotFoundException("O video com id {0} não foi encontrao na base de dados", value.getFrameId()));
 
-        if (ObjectUtils.notEqual(VideoDocument.Status.WAITING, videoDocument.getStatus())) {
+        if (ObjectUtils.notEqual(VideoDocument.Status.PENDING, videoDocument.getStatus())) {
             // TODO - throw exception aqui
         }
 
         try (var inputStream = s3Client.getObject(
-                GetObjectRequest.builder().bucket(BUCKET_IN).key(value.key()).build());
+                GetObjectRequest.builder().bucket(BUCKET_IN).key(value.getKey()).build());
              var c = new Java2DFrameConverter();
              var baos = new ByteArrayOutputStream()) {
 
