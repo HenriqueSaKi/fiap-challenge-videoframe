@@ -35,8 +35,8 @@ import java.util.zip.ZipOutputStream;
 public class VideoFrameHandler implements MessageHandler {
     private static final Logger LOG = LoggerFactory.getLogger(VideoFrameHandler.class);
 
-    private static final String BUCKET_IN = "bucket-videos-fiap-hackathon/videos";
-    private static final String BUCKET_OUT = "bucket-videos-fiap-hackathon/zipFiles";
+    private static final String BUCKET_IN = "bucket-videos-fiap-hackathon";
+    private static final String BUCKET_OUT = "bucket-videos-fiap-hackathon";
 
     private final ObjectMapper objectMapper;
     private final VideoRepository videoRepository;
@@ -66,7 +66,7 @@ public class VideoFrameHandler implements MessageHandler {
         }
 
         try (var inputStream = s3Client.getObject(
-                GetObjectRequest.builder().bucket(BUCKET_IN).key(value.getKey()).build());
+                GetObjectRequest.builder().bucket(BUCKET_IN).key("videos/" + value.getKey()).build());
              var c = new Java2DFrameConverter();
              var baos = new ByteArrayOutputStream()) {
 
@@ -96,7 +96,7 @@ public class VideoFrameHandler implements MessageHandler {
             }
             var fileName = videoDocument.getId() + ".zip";
             s3Client.putObject(PutObjectRequest.builder().bucket(BUCKET_OUT)
-                    .key(fileName).build(), RequestBody.fromBytes(baos.toByteArray()));
+                    .key("zipFiles/" + fileName).build(), RequestBody.fromBytes(baos.toByteArray()));
 
             videoDocument.setFrameName(fileName);
 
