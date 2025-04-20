@@ -40,7 +40,7 @@ public class AwsConfiguration {
 
         final var endpointOverride = awsProperty.endpointOverride();
 
-        if (ObjectUtils.isNotEmpty(endpointOverride)) {
+        if (ObjectUtils.isNotEmpty(endpointOverride) && "sqsClient".equals(name)) {
             LOG.info("Endpoint Override '{}' in {}", endpointOverride, name);
             builder.endpointOverride(endpointOverride);
         }
