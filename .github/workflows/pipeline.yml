@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'java' ]
-        exclude: []
+        exclude: [ ]
 
     steps:
       - uses: actions/checkout@v4
@@ -47,13 +47,10 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
-      - name: SonarCloud Execution
+      - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=HenriqueSaKi_ms-video-backoffice
-
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=HenriqueSaKi_fiap-challenge-videoframe
   build-ECR:
     name: Build ECR image
     runs-on: ubuntu-latest
@@ -117,11 +114,11 @@ jobs:
           EKS_CLUSTER_NAME: "EKS-FIAP-hackathon"
         run: aws eks update-kubeconfig --region us-east-1 --name $EKS_CLUSTER_NAME
 
-#      - name: Deploy Secrets
-#        run: kubectl apply -f k8s/eks-video-backoffice-secrets.yaml
-#
-#      - name: Deploy ConfigMaps
-#        run: kubectl apply -f k8s/eks-video-backoffice-configmaps.yaml
+      #      - name: Deploy Secrets
+      #        run: kubectl apply -f k8s/eks-video-backoffice-secrets.yaml
+      #
+      #      - name: Deploy ConfigMaps
+      #        run: kubectl apply -f k8s/eks-video-backoffice-configmaps.yaml
 
       - name: Deploy Pre
         run: |
