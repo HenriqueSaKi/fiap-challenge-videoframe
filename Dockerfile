@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn clean spring-boot:repackage -Dmaven.test.skip=true
+RUN mvn clean package spring-boot:repackage -Dmaven.test.skip=true
 
 FROM eclipse-temurin:21-jdk-alpine
 
