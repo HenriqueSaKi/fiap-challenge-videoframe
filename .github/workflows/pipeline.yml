@@ -122,5 +122,5 @@ jobs:
 
       - name: Deploy Pre
         run: |
-          kubectl apply -f k8s/eks-video-backoffice-svc.yaml
+          kubectl apply -f k8s/eks-video-backoffice-service.yaml
           kubectl apply -f k8s/eks-video-backoffice-deployment.yaml

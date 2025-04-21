@@ -4,11 +4,6 @@ spring:
   data:
     mongodb:
       uri: ${MONGO_DB_URI}
-#      password: "fiap#2025"
-#      username: "videoStream"
-#      host: 172.17.108.191
-#      port: 27017
-#      database: videoframe
   cloud:
     aws:
       sqs:
@@ -25,3 +20,19 @@ application:
 logging:
   level:
     br.com.fiap.challenge.videoframe: DEBUG
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+    endpoint:
+      health:
+        probes:
+          enabled: true
+        show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health

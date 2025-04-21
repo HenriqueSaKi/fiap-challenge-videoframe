@@ -41,13 +41,13 @@ spec:
               value: "SQS-FIAP-Hackathon"
           readinessProbe:
             httpGet:
-              path: /api/v1/actuator/health
+              path: /actuator/health
               port: 8080
             initialDelaySeconds: 40
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /api/v1/actuator/health
+              path: /actuator/health
               port: 8080
             initialDelaySeconds: 40
             periodSeconds: 10
