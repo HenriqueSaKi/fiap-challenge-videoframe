@@ -111,7 +111,7 @@ jobs:
 
       - name: Update Kube Config
         env:
-          EKS_CLUSTER_NAME: "EKS-FIAP-hackathon"
+          EKS_CLUSTER_NAME: "EKS-FIAP-Hackathon"
         run: aws eks update-kubeconfig --region us-east-1 --name $EKS_CLUSTER_NAME
 
       #      - name: Deploy Secrets
