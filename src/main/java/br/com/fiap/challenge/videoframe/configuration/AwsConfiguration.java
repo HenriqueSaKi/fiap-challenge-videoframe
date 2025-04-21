@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.awscore.client.builder.AwsClientBuilder;
 import software.amazon.awssdk.regions.Region;
@@ -42,13 +41,9 @@ public class AwsConfiguration {
     private <K extends AwsClientBuilder<K, V>, V> AwsClientBuilder<K, V> applyCommonConfig(
             AwsClientBuilder<K, V> builder, String name) {
         LOG.info("Setup default aws credential provider in {}", name);
-        builder.credentialsProvider(DefaultCredentialsProvider.create());
+        builder.credentialsProvider(ProfileCredentialsProvider.create());
 
         final var endpointOverride = awsProperty.endpointOverride();
-
-        if ("stsClient".equals(name)) {
-            builder.credentialsProvider(ProfileCredentialsProvider.create());
-        }
 
         if (ObjectUtils.isNotEmpty(endpointOverride) && "sqsClient".equals(name)) {
             LOG.info("Endpoint Override '{}' in {}", endpointOverride, name);
