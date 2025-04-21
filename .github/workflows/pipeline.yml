@@ -77,7 +77,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t video-backoffice .
+          docker build -t video-backoffice:latest .
 
       - name: Publish to ECR
         env:
