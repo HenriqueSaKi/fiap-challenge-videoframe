@@ -115,11 +115,8 @@ jobs:
           EKS_CLUSTER_NAME: "EKS-FIAP-Hackathon"
         run: aws eks update-kubeconfig --region us-east-1 --name $EKS_CLUSTER_NAME
 
-      #      - name: Deploy Secrets
-      #        run: kubectl apply -f k8s/eks-video-backoffice-secrets.yaml
-
-      - name: Deploy Service Account
-        run: kubectl apply -f k8s/eks-video-backoffice-service-account.yaml
+      - name: Deploy Secrets
+        run: kubectl apply -f k8s/eks-video-backoffice-secrets.yaml
 
       - name: Deploy Pre
         run: |

@@ -39,6 +39,21 @@ spec:
               value: "https://sqs.us-east-1.amazonaws.com/345124661122/SQS-FIAP-Hackathon"
             - name: AWS_SQS_QUEUE_NAME
               value: "SQS-FIAP-Hackathon"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: eks-video-backoffice-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: eks-video-backoffice-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_SESSION_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: eks-video-backoffice-secrets
+                  key: AWS_SECRET_ACCESS_KEY
           readinessProbe:
             httpGet:
               path: /actuator/health
