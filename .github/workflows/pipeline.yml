@@ -3,7 +3,7 @@ name: Build ECR image
 on:
   push:
     branches:
-#      - master
+     - master
 
 jobs:
   sonar:
