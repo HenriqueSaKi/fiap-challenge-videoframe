@@ -1,7 +1,6 @@
 package br.com.fiap.challenge.videoframe.configuration;
 
 import br.com.fiap.challenge.videoframe.configuration.property.AwsProperty;
-
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;

@@ -117,9 +117,9 @@ jobs:
 
       #      - name: Deploy Secrets
       #        run: kubectl apply -f k8s/eks-video-backoffice-secrets.yaml
-      #
-      #      - name: Deploy ConfigMaps
-      #        run: kubectl apply -f k8s/eks-video-backoffice-configmaps.yaml
+
+      - name: Deploy Service Account
+        run: kubectl apply -f k8s/eks-video-backoffice-service-account.yaml
 
       - name: Deploy Pre
         run: |

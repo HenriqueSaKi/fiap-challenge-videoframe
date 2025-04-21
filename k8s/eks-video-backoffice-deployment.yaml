@@ -59,5 +59,6 @@ spec:
               cpu: 2000m
               memory: 2048Mi
           imagePullPolicy: IfNotPresent
+      serviceAccountName: eks-video-backoffice-sa
       nodeSelector:
         kubernetes.io/os: linux
