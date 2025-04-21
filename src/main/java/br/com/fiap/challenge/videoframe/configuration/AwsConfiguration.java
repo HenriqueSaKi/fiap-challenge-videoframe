@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.awscore.client.builder.AwsClientBuilder;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sts.StsClient;
 
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 @Configuration
@@ -22,6 +24,11 @@ public class AwsConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(AwsConfiguration.class);
 
     private final AwsProperty awsProperty;
+    
+    @Bean
+    StsClient stsClient() {
+        return applyCommonConfig(StsClient.builder(), "stsClient").build();
+    }
 
     @Bean
     SqsClient sqsClient() {
@@ -39,6 +46,10 @@ public class AwsConfiguration {
         builder.credentialsProvider(DefaultCredentialsProvider.create());
 
         final var endpointOverride = awsProperty.endpointOverride();
+
+        if ("stsClient".equals(name)) {
+            builder.credentialsProvider(ProfileCredentialsProvider.create());
+        }
 
         if (ObjectUtils.isNotEmpty(endpointOverride) && "sqsClient".equals(name)) {
             LOG.info("Endpoint Override '{}' in {}", endpointOverride, name);
