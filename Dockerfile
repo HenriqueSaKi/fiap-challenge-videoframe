@@ -1,4 +1,4 @@
-FROM maven:3.9.8-eclipse-temurin-21-alpine AS builder
+FROM maven:3.9.8-eclipse-temurin-17-alpine AS builder
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ COPY . .
 
 RUN mvn clean package -Dmaven.test.skip=true
 
-FROM eclipse-temurin:21-jdk-alpine
+FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
 
