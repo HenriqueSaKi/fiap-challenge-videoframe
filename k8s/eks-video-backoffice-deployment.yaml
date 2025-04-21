@@ -53,7 +53,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: eks-video-backoffice-secrets
-                  key: AWS_SECRET_ACCESS_KEY
+                  key: AWS_SESSION_TOKEN
           readinessProbe:
             httpGet:
               path: /actuator/health
