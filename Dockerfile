@@ -18,4 +18,4 @@ RUN apt-get install -y ffmpeg
 
 EXPOSE 8080/tcp
 
-ENTRYPOINT ["java", "-jar","app.jar"]
+ENTRYPOINT ["java", "-Xmx6g", "-jar", "app.jar"]
