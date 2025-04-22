@@ -6,7 +6,7 @@ COPY . .
 
 RUN mvn -f pom.xml clean package -Dmaven.test.skip=true
 
-FROM bytedeco/javacv:1.5.11-openjdk-21
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
