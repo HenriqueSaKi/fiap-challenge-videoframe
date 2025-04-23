@@ -11,16 +11,10 @@ spring:
       on-profile: test
   cloud:
     aws:
-      sqs:
-        endpoint: ${application.aws.endpoint-override}
-        region: ${application.aws.region-override}
       s3:
         path-style-access-enabled: true
 
 application:
-  aws:
-    endpoint-override: http://localhost:4566
-    region-override: us-east-1
   broker:
     from: fiap-challenge-videframe-sqs
   bucket:
