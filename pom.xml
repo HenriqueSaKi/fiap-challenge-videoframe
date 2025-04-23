@@ -19,6 +19,9 @@
         <software.amazon.awssdk.version>2.31.14</software.amazon.awssdk.version>
         <org.springframework.cloud.version>2024.0.1</org.springframework.cloud.version>
         <com.fasterxml.jackson.datatype.version>2.18.3</com.fasterxml.jackson.datatype.version>
+
+        <sonar.organization>henriquesaki</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
