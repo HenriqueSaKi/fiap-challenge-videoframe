@@ -3,8 +3,6 @@ spring:
     name: fiap-videoframe
   data:
     mongodb:
-      password: "fiap#2025"
-      username: "videoStream"
       host: 172.17.108.191
       port: 27017
       database: videoframe
