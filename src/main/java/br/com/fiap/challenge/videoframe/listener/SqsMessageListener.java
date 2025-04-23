@@ -17,7 +17,7 @@ import java.util.UUID;
 public class SqsMessageListener implements MessageListener<String> {
   private final MessageHandler messageHandler;
 
-  private static final String RASTREIO_ID = "RASTREIO_ID";
+  public static final String RASTREIO_ID = "RASTREIO_ID";
 
   @Override
   public void onMessage(@NonNull Message<String> message) {
