@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: fiap-videoframe
+  data:
+    mongodb:
+      host: 172.17.108.191
+      port: 27017
+      database: videoframe
+  config:
+    activate:
+      on-profile: test
+  cloud:
+    aws:
+      sqs:
+        endpoint: ${application.aws.endpoint-override}
+        region: ${application.aws.region-override}
+      s3:
+        path-style-access-enabled: true
+
+application:
+  aws:
+    endpoint-override: http://localhost:4566
+    region-override: us-east-1
+  broker:
+    from: fiap-challenge-videframe-sqs
+  bucket:
+    in: fiap-challenge-videoframe-in-bucket
+    out: fiap-challenge-videoframe-out-bucket
+
+logging:
+  level:
+    br.com.fiap.challenge.videoframe: DEBUG

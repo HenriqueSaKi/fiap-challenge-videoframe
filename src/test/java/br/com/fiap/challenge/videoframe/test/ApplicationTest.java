@@ -18,7 +18,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(properties = "AWS_REGION=us-east-1")
+@SpringBootTest
 @ActiveProfiles("test")
 class ApplicationTest {
 

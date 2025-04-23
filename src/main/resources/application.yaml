@@ -1,66 +1,46 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
 spring:
+  config:
+    activate:
+      on-profile: pre
   application:
     name: fiap-videoframe
   data:
     mongodb:
-      host: 172.17.108.191
-      port: 27017
-      database: videoframe
-
-application:
-  broker:
-    from: fiap-challenge-videframe-sqs
-  bucket:
-    in: fiap-challenge-videoframe-in-bucket
-    out: fiap-challenge-videoframe-out-bucket
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: local
+      uri: ${MONGO_DB_URI}
   cloud:
     aws:
       sqs:
         endpoint: ${application.aws.endpoint-override}
         region: ${application.aws.region-override}
-      s3:
-        path-style-access-enabled: true
 
 application:
-  aws:
-    endpoint-override: http://172.17.108.191:4566
-    region-override: us-east-1
-
-logging:
-  level:
-    br.com.fiap.challenge.videoframe: DEBUG
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: test
-  cloud:
-    aws:
-      sqs:
-        endpoint: ${application.aws.endpoint-override}
-        region: ${application.aws.region-override}
-      s3:
-        path-style-access-enabled: true
-
-application:
-  aws:
-    endpoint-override: http://localhost:4566
-    region-override: us-east-1
   broker:
-    from: fiap-challenge-videframe-sqs
-  bucket:
-    in: fiap-challenge-videoframe-in-bucket
-    out: fiap-challenge-videoframe-out-bucket
+    from: ${AWS_SQS_QUEUE_NAME}
+  aws:
+    region-override: ${AWS_REGION}
+    endpoint-override: ${AWS_SQS_ENDPOINT}
 
 logging:
   level:
     br.com.fiap.challenge.videoframe: DEBUG
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+    endpoint:
+      health:
+        probes:
+          enabled: true
+        show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health
