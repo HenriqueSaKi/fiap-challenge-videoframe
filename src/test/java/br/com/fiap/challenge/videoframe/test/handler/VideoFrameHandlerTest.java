@@ -34,7 +34,7 @@ import java.util.UUID;
 import static br.com.fiap.challenge.videoframe.listener.SqsMessageListener.RASTREIO_ID;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(properties = "AWS_REGION=us-east-1")
 @AutoConfigureDataMongo
 @ActiveProfiles("test")
 class VideoFrameHandlerTest {
