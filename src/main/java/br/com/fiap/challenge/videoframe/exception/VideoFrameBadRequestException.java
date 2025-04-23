@@ -8,7 +8,6 @@ public class VideoFrameBadRequestException extends VideoFrameException {
         super(new MessageFormat(message).format(parameters));
     }
 
-
     @Override
     public Integer getCode() {
         return 400;

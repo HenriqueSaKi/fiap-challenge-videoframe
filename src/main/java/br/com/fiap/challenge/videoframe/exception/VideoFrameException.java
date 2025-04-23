@@ -2,13 +2,14 @@ package br.com.fiap.challenge.videoframe.exception;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.StringUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,10 +70,6 @@ public abstract class VideoFrameException extends RuntimeException {
             return errorDetail;
         }
 
-        public ErrorDetail message(String message, Object... parameters) {
-            return message(MessageFormat.format(message, parameters));
-        }
-
         public ErrorDetail message(String message) {
             this.message = message;
             return this;
@@ -83,26 +80,10 @@ public abstract class VideoFrameException extends RuntimeException {
         PARAMETER,
         BODY,
         PATH,
-        INTERNAL;
-
-        @SuppressWarnings("unused")
-        public static LocationType enumValue(String value) {
-
-            for (LocationType locationType : LocationType.values()) {
-                if (StringUtils.equalsIgnoreCase(locationType.name(), value)) {
-                    return locationType;
-                }
-            }
-
-            throw new IllegalArgumentException(
-                    MessageFormat.format("LocationType enum {0} doesn''t exists", value));
-        }
-    }
-
-    public String getValue() {
-        return String.valueOf(getCode());
+        INTERNAL
     }
 
     public abstract Integer getCode();
+
     public abstract String getMessageCode();
 }

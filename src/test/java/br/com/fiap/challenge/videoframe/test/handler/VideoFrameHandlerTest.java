@@ -4,14 +4,18 @@ import br.com.fiap.challenge.videoframe.document.VideoDocument;
 import br.com.fiap.challenge.videoframe.exception.VideoFrameBadRequestException;
 import br.com.fiap.challenge.videoframe.exception.VideoFrameInternalServerErrorException;
 import br.com.fiap.challenge.videoframe.exception.VideoFrameNotFoundException;
+import br.com.fiap.challenge.videoframe.listener.SqsErrorHandler;
 import br.com.fiap.challenge.videoframe.listener.SqsMessageListener;
 import br.com.fiap.challenge.videoframe.repository.VideoRepository;
+
 import lombok.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.messaging.Message;
@@ -28,16 +32,18 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static br.com.fiap.challenge.videoframe.listener.SqsMessageListener.RASTREIO_ID;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@AutoConfigureDataMongo
 @ActiveProfiles("test")
 class VideoFrameHandlerTest {
     private static final Logger LOG = LoggerFactory.getLogger(VideoFrameHandlerTest.class);
 
     @Autowired
     private SqsMessageListener videoFrameHandler;
+    @Autowired
+    private SqsErrorHandler sqsErrorHandler;
 
     @MockBean
     private VideoRepository videoRepository;
@@ -46,10 +52,9 @@ class VideoFrameHandlerTest {
 
     private final String messageValue = """
             {
-                "id": "b261e550-5cd8-427d-94b3-2163d9e3bea2",
-                "key": "20250331_192454.mp4"
-            }
-            """;
+                "frameId": "b261e550-5cd8-427d-94b3-2163d9e3bea2",
+                "key": "b261e550-5cd8-427d-94b3-2163d9e3bea2"
+            }""";
 
     private final Message<String> json= new Message<>() {
         @Override
@@ -101,6 +106,8 @@ class VideoFrameHandlerTest {
         var exception = Assertions.assertThrows(VideoFrameNotFoundException.class, () -> videoFrameHandler.onMessage(json));
         Assertions.assertEquals(404, exception.getCode());
         Assertions.assertEquals("exception.code.404", exception.getMessageCode());
+
+        sqsErrorHandler.handle(json, exception);
     }
 
     @Test
@@ -157,11 +164,10 @@ class VideoFrameHandlerTest {
 
     @Test
     void whenGetAMessage_thenProcessWithSuccessfully() {
-        var id = UUID.randomUUID();
+        var id = UUID.randomUUID().toString();
 
         var document = new VideoDocument();
-        document.setId(String.valueOf(id));
-        document.setVideoName("Frame Test 123");
+        document.setId(id);
         document.setStatus(VideoDocument.Status.PROCESSING);
         document.setUsername("user.test");
 
@@ -177,6 +183,6 @@ class VideoFrameHandlerTest {
 
         videoFrameHandler.onMessage(json);
 
-        Assertions.assertNotNull("Successfully");
+        Assertions.assertEquals(VideoDocument.Status.DONE, document.getStatus());
     }
 }
